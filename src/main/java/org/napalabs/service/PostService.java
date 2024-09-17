@@ -1,5 +1,6 @@
 package org.napalabs.service;
 
+import org.napalabs.exception.NotFoundException;
 import org.napalabs.model.Post;
 import org.napalabs.repository.PostRepository;
 import org.springframework.stereotype.Service;
@@ -18,15 +19,15 @@ public class PostService {
     }
 
     public Post getById(long id) {
-        return repository.getById(id);
+        return repository.getById(id).orElseThrow( NotFoundException::new);
     }
 
     public Post save(Post post) {
         return repository.save(post);
     }
 
-    public boolean removeById(long id) {
-        return repository.removeById(id);
+    public void removeById(long id) {
+        repository.removeById(id);
     }
 }
 

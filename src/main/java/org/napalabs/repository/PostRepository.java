@@ -6,11 +6,12 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Repository
-public class PostRepository implements PostInteface {
+public class PostRepository implements PostInterface {
     private final Map<Long, Post> postMap = new ConcurrentHashMap<>();
     long count = 1;
 
@@ -18,8 +19,9 @@ public class PostRepository implements PostInteface {
         return new ArrayList<>(postMap.values());
     }
 
-    public Post getById(long id) {
-        return postMap.get(id);
+    public Optional<Post> getById(long id) {
+        Post post = postMap.get(id);
+        return Optional.ofNullable(post);
     }
 
     public Post save(Post post) {
@@ -33,12 +35,12 @@ public class PostRepository implements PostInteface {
         }
     }
 
-    public boolean removeById(long id) {
+    public void removeById(long id) {
         var item = postMap.get(id);
         if (item != null) {
             postMap.remove(id);
-            return true;
+
         }
-        return false;
+        System.out.println("Can't delete element, not found");
     }
 }
